@@ -141,6 +141,11 @@ void executeCode(Chip8 * chip, GSI * gsi)
 	
 	chip->opCode_ = (chip->mem_[chip->progCounter_] << 8) | (chip->mem_[chip->progCounter_ + 1]);
 
+	unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
+	unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
+	uint8_t nVal = static_cast<uint8_t>(chip->opCode_ & 0x00FF);
+	uint8_t regVal = chip->vReg_[(chip->opCode_ & 0x0F00) >> 8];
+
 	// print memory address hex, memory address local, opcode
 	if (chip->printInst_)
 		printf("%.4u  %.4X  %.4X\n", chip->progCounter_, chip->progCounter_, chip->opCode_);
@@ -182,8 +187,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 			break;
 		case VX_SKIP_EQUAL_ADDR:
 		{
-			uint8_t nVal = static_cast<uint8_t>(chip->opCode_ & 0x00FF);
-			uint8_t regVal = chip->vReg_[(chip->opCode_ & 0x0F00) >> 8];
 			if (nVal == regVal)
 				chip->progCounter_ += 4;
 			else
@@ -192,8 +195,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 			break;
 		case VX_SKIP_NEQUAL_ADDR:
 		{
-			uint8_t nVal = static_cast<uint8_t>(chip->opCode_ & 0x00FF);
-			uint8_t regVal = chip->vReg_[(chip->opCode_ & 0x0F00) >> 8];
 			if (nVal != regVal)
 				chip->progCounter_ += 4;
 			else
@@ -202,8 +203,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 			break;
 		case VX_NOT_VY:
 		{
-			unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-			unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
 			if (chip->vReg_[xIdx] != chip->vReg_[yIdx])
 				chip->progCounter_ += 4;
 			else
@@ -212,16 +211,12 @@ void executeCode(Chip8 * chip, GSI * gsi)
 			break;
 		case SET_VX_TO_ADDR:
 		{
-			unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-			uint8_t nVal = static_cast<uint8_t>(chip->opCode_ & 0x00FF);
 			chip->vReg_[xIdx] = nVal;
 			chip->progCounter_ += 2;
 		}
 			break;
 		case SET_VX_VX_PLUS_ADDR:
 		{
-			unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-			uint8_t nVal = static_cast<uint8_t>(chip->opCode_ & 0x00FF);
 			chip->vReg_[xIdx] += nVal;
 			chip->progCounter_ += 2;
 		}
@@ -231,40 +226,30 @@ void executeCode(Chip8 * chip, GSI * gsi)
 			{
 				case SET_VX_TO_VY:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-					unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
 					chip->vReg_[xIdx] = chip->vReg_[yIdx];
 					chip->progCounter_ += 2;
 				}
 					break;
 				case SET_VX_VX_OR_VY:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-					unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
 					chip->vReg_[xIdx] |= chip->vReg_[yIdx];
 					chip->progCounter_ += 2;
 				}
 					break;
 				case SET_VX_VX_AND_VY:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-					unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
 					chip->vReg_[xIdx] &= chip->vReg_[yIdx];
 					chip->progCounter_ += 2;
 				}
 					break;
 				case SET_VX_VX_XOR_VY:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-					unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
 					chip->vReg_[xIdx] ^= chip->vReg_[yIdx];
 					chip->progCounter_ += 2;
 				}
 					break;
 				case SET_VX_VX_PLUS_VY:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-					unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
 					
 					if (chip->vReg_[yIdx] > (0xFF - chip->vReg_[xIdx]))
 						chip->vReg_[0xF] = 1;
@@ -277,9 +262,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case SET_VX_VX_MINUS_VY:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-					unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
-
 					if (chip->vReg_[yIdx] > chip->vReg_[xIdx])
 						chip->vReg_[0xF] = 0;
 					else
@@ -291,18 +273,13 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case SET_VX_SHIFT_ONE_RIGHT:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-					uint8_t xVal = chip->vReg_[xIdx];
-					chip->vReg_[0xF] = xVal & 1;	// xVal & 0000 0001 
+					chip->vReg_[0xF] = chip->vReg_[xIdx] & 1;	// xVal & 0000 0001 
 					chip->vReg_[xIdx] >>= 1;
 					chip->progCounter_ += 2;
 				}
 					break;
 				case SET_VX_VY_MINUS_VX:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-					unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
-
 					if (chip->vReg_[xIdx] > chip->vReg_[yIdx])
 						chip->vReg_[0xF] = 0;
 					else
@@ -314,9 +291,7 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case SET_VX_SHIFT_ONE_LEFT:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-					uint8_t xVal = chip->vReg_[xIdx];
-					chip->vReg_[0xF] = xVal & 128;	// xVal & 1000 0000 
+					chip->vReg_[0xF] = chip->vReg_[xIdx] & 128;	// xVal & 1000 0000 
 					chip->vReg_[xIdx] <<= 1;
 					chip->progCounter_ += 2;
 				}
@@ -329,10 +304,7 @@ void executeCode(Chip8 * chip, GSI * gsi)
 			}
 			break;
 		case CHECK_VX_IS_VY:
-		{
-			unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-			unsigned yIdx = (chip->opCode_ & 0x00F0) >> 4;
-			
+		{	
 			if (chip->vReg_[xIdx] == chip->vReg_[yIdx])
 				chip->progCounter_ += 2;
 			else
@@ -352,16 +324,14 @@ void executeCode(Chip8 * chip, GSI * gsi)
 			break;
 		case SET_VX_RAND_AND_NN:
 		{
-			unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-			unsigned short num = (chip->opCode_ & 0x00FF);
-			chip->vReg_[xIdx] = (rand() % 256) & num;
+			chip->vReg_[xIdx] = (rand() % 256) & nVal;
 			chip->progCounter_ += 2;
 		}
 			break;
 		case DRAW_VX_VY_N:
 		{
-			uint16_t xCoord = chip->vReg_[(chip->opCode_ & 0x0F00) >> 8];
-			uint16_t yCoord = chip->vReg_[(chip->opCode_ & 0x00F0) >> 4];
+			uint16_t xCoord = chip->vReg_[xIdx];
+			uint16_t yCoord = chip->vReg_[yIdx];
 			uint16_t height = (chip->opCode_ & 0x000F);
 
 			chip->vReg_[0xF] = 0;
@@ -384,7 +354,7 @@ void executeCode(Chip8 * chip, GSI * gsi)
 			{
 				case SKIP_IF_KEY_PRESSED:
 				{
-					if (chip->key_[chip->vReg_[(chip->opCode_ & 0x0F00) >> 8]] != 0)
+					if (chip->key_[chip->vReg_[xIdx]] != 0)
 						chip->progCounter_ += 4;
 					else
 						chip->progCounter_ += 2;
@@ -392,7 +362,7 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case SKIP_IF_KEY_NT_PRESSED:
 				{
-					if (chip->key_[chip->vReg_[(chip->opCode_ & 0x0F00) >> 8]] == 0)
+					if (chip->key_[chip->vReg_[xIdx]] == 0)
 						chip->progCounter_ += 4;
 					else
 						chip->progCounter_ += 2;
@@ -410,7 +380,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 			{
 				case SET_VX_TO_DELAY_TIMER:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
 					chip->vReg_[xIdx] = chip->delayTimer_;
 					chip->progCounter_ += 2;
 				}
@@ -423,7 +392,7 @@ void executeCode(Chip8 * chip, GSI * gsi)
 						if (chip->key_[i] != 0)
 						{
 							isPressed = true;
-							chip->vReg_[(chip->opCode_ & 0x0F00) >> 8] = i;
+							chip->vReg_[xIdx] = i;
 						}
 					}
 
@@ -435,7 +404,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case SET_DELAY_TIMER_TO_VX:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
 					chip->delayTimer_ = chip->vReg_[xIdx];
 					
 					if (!chip->isDelay_)
@@ -449,7 +417,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case SET_SOUND_TIMER_TO_VX:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
 					chip->soundTimer_ = chip->vReg_[xIdx];
 
 					if (!chip->soundPlaying_)
@@ -463,8 +430,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case SET_INDEX_PLUS_VX:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
-
 					if (chip->regIndex_ + chip->vReg_[xIdx] > 0x0FFF)
 						chip->vReg_[0xF] = 1;
 					else
@@ -476,14 +441,12 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case SET_INDEX_TO_SPRITE:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
 					chip->regIndex_ = chip->vReg_[xIdx] * 5; // 4x5 font, offset by 5 to find character
 					chip->progCounter_ += 2;
 				}
 					break;
 				case STORE_BINARY_DEC_VX:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
 					uint8_t xVal = chip->vReg_[xIdx];
 
 					chip->mem_[chip->regIndex_] = (xVal / 100) % 10;
@@ -495,7 +458,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case STORE_V0_TO_VX_AT_IDX:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
 					for (unsigned i = 0; i <= xIdx; ++i)
 						chip->mem_[chip->regIndex_ + i] = chip->vReg_[i];
 
@@ -505,7 +467,6 @@ void executeCode(Chip8 * chip, GSI * gsi)
 					break;
 				case FILL_V0_TO_VX_AT_IDX:
 				{
-					unsigned xIdx = (chip->opCode_ & 0x0F00) >> 8;
 					for (unsigned i = 0; i <= xIdx; ++i)
 						chip->vReg_[i] = chip->mem_[chip->regIndex_ + i];
 

@@ -43,16 +43,9 @@ enum OpCode : uint16_t
 	FILL_V0_TO_VX_AT_IDX = 0xF065	// FX65
 };
 
-#define SLOW_SPEED	1'851'852	// 540Hz
-#define MED_SPEED	1'041'667	// 960hz
-#define FAST_SPEED	  724'638	// 1380Hz
-
-enum SPEED : uint8_t
-{
-	SLOW = 9,
-	MED = 16,
-	FAST = 23
-};
+#define SLOW_SPEED	1'666'666	// 600Hz
+#define MED_SPEED	1'000'000	// 1000hz
+#define FAST_SPEED	  666'666	// 1500Hz
 
 #define MEMSIZE 4096
 #define ROMSIZE 3584
@@ -75,7 +68,6 @@ typedef struct Chip8
 	
 	std::atomic<uint8_t> delayTimer_;
 	std::atomic<uint8_t> soundTimer_;
-	SPEED speed_;
 	bool soundPlaying_;
 	bool isDelay_;
 	

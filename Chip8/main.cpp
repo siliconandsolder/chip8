@@ -12,7 +12,6 @@ int main(int argc, char * argv[])
 
 	// default speed if there are no arguments
 	long speed = MED_SPEED;
-	chip.speed_ = MED;
 
 	char path[256] = "\\Games\\PONG.bin";
 	char slowFlag[] = "--slow";
@@ -29,17 +28,14 @@ int main(int argc, char * argv[])
 			if (strcmp(argv[1], slowFlag) == 0)
 			{
 				speed = SLOW_SPEED;
-				chip.speed_ = SLOW;
 			}
 			else if (strcmp(argv[1], medFlag) == 0)
 			{
 				speed = MED_SPEED;
-				chip.speed_ = MED;
 			}
 			else if (strcmp(argv[1], fastFlag) == 0)
 			{
 				speed = FAST_SPEED;
-				chip.speed_ = FAST;
 			}
 			else
 			{
@@ -66,17 +62,14 @@ int main(int argc, char * argv[])
 			if (strcmp(argv[2], slowFlag) == 0)
 			{
 				long speed = SLOW_SPEED;
-				chip.speed_ = SLOW;
 			}
 			else if (strcmp(argv[2], medFlag) == 0)
 			{
 				long speed = MED_SPEED;
-				chip.speed_ = MED;
 			}
 			else if (strcmp(argv[2], fastFlag) == 0)
 			{
 				long speed = FAST_SPEED;
-				chip.speed_ = FAST;
 			}
 			else
 			{
