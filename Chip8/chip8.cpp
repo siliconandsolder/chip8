@@ -2,6 +2,7 @@
 #include <cstring>
 #include <cmath>
 #include <ctime>
+#include <direct.h>
 #include "chip8.h"
 #include "graphics.h"
 
@@ -62,8 +63,8 @@ void initChip(Chip8 * chip)
 */
 void loadGame(Chip8 * chip, const char * path)
 {
-	FILE * file = fopen(path, "rb");
-	if (file == NULL)
+	FILE * file;
+	if (fopen_s(&file, path, "rb") != 0)
 	{
 		fprintf(stderr, "Could not open file %s\n", path);
 		exit(1);
@@ -98,7 +99,7 @@ void executeCode(Chip8 * chip, GSI * gsi)
 		// ticks are 1/60 of a second
 		// actual timestamps are used, because not each iteration of the main loop takes the same number of nanoseconds.
 		auto now = std::chrono::system_clock::now();
-		uint32_t nano = (unsigned)std::chrono::duration_cast<std::chrono::nanoseconds>(now - delayTime).count();
+		uint32_t nano = (uint32_t)std::chrono::duration_cast<std::chrono::nanoseconds>(now - delayTime).count();
 		uint8_t ticks = (nano + halfNano) / fullNano;
 
 		if (ticks > 0)
@@ -121,7 +122,7 @@ void executeCode(Chip8 * chip, GSI * gsi)
 		// ticks are 1/60 of a second
 		// actual timestamps are used, because not each iteration of the main loop takes the same number of nanoseconds.
 		auto now = std::chrono::system_clock::now();
-		uint32_t nano = (unsigned)std::chrono::duration_cast<std::chrono::nanoseconds>(now - soundTime).count();
+		uint32_t nano = (uint32_t)std::chrono::duration_cast<std::chrono::nanoseconds>(now - soundTime).count();
 		uint8_t ticks = (nano + halfNano) / fullNano;
 
 		if (ticks > 0)
@@ -499,6 +500,8 @@ void executeCode(Chip8 * chip, GSI * gsi)
 		printf("Value at index: %.4x\n", chip->mem_[chip->regIndex_]);
 
 		printf("Stack:\n");
+		if (chip->stackPointer_ == 0)
+			printf("No stack!\n");
 
 		for(unsigned i = 0; i < chip->stackPointer_; ++i)
 			printf("%u: %.4X\n", i, chip->stack_[i]);

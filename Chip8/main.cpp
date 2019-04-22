@@ -1,7 +1,6 @@
 #include "graphics.h"
 #include <chrono>
 #include <thread>
-#include <regex>
 
 // chip8.exe <program_path> --<speed>
 
@@ -45,14 +44,14 @@ int main(int argc, char * argv[])
 		}
 		else
 		{
-			memcpy_s(path, 256, '\0', 256);
+			memset(path, 0, 256);
 			memcpy_s(path, 256, argv[1], strlen(argv[1]));
 		}
 	}
 	else if (argc == 3)
 	{
-		memcpy_s(path, 256, '\0', 256);
-		memcpy_s(path, 256, argv[2], strlen(argv[2]));
+		memset(path, 0, 256);
+		memcpy_s(path, 256, argv[1], strlen(argv[1]));
 
 		char flagCheck[3];
 		strncpy(flagCheck, argv[2], 2);
@@ -86,7 +85,7 @@ int main(int argc, char * argv[])
 
 	initChip(&chip);
 	setupScreen(&gsi, &chip);
-	loadGame(&chip, "C:\\Users\\Ben\\Documents\\Fanshawe_2018_Fall\\Other\\Chip8\\x64\\Debug\\PONG.bin");
+	loadGame(&chip, path);
 	slRender();
 
 	while (!slGetKey(SL_KEY_ESCAPE))
