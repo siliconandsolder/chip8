@@ -45,7 +45,6 @@ void initChip(Chip8 * chip)
 
 	// clear stack
 	memset(chip->stack_, 0, STACKSIZE);
-	chip->stackPointer_ = 0;
 
 	// clear registers V0 to VF
 	memset(chip->vReg_, 0, VREGSIZE);
