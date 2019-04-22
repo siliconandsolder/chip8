@@ -1,4 +1,12 @@
-#include "graphics.h"
+/**	@file main.cpp
+@author Benjamin Godin
+@date 2019-04-21
+@version 1.0.0
+@note Developed for C++17/vc14.1
+@brief Entry point
+*/
+
+#include "graphics.hpp"
 #include <chrono>
 #include <thread>
 

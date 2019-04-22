@@ -1,6 +1,13 @@
-#include <Windows.h>
+/**	@file graphics.cpp
+@author Benjamin Godin
+@date 2019-04-21
+@version 1.0.0
+@note Developed for C++17/vc14.1
+@brief Graphics and Input functionality
+*/
+
 #include <chrono>
-#include "graphics.h"
+#include "graphics.hpp"
 
 static const short NUM_ROWS = 32;
 static const short NUM_COLS = 64;
@@ -211,6 +218,12 @@ void getInput(GSI * gsi)
 	while (!gsi->chip_->goNext_ && gsi->chip_->inDebug_);
 }
 
+/**
+@name:		cleanUpGraphics
+@purpose:	Cleans up the screen before exiting the program
+@param:		GSI *
+@return:	void
+*/
 void cleanUpGraphics(GSI * gsi)
 {
 	gsi->chip_->drawFlag_ = true;

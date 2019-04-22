@@ -1,3 +1,11 @@
+/**	@file font_set.hpp
+@author Benjamin Godin
+@date 2019-04-21
+@version 1.0.0
+@note Developed for C++17/vc14.1
+@brief Contains the main font set for the Chip8 interpreter
+*/
+
 #pragma once
 #include <cstdint>
 

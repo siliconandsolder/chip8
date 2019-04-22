@@ -1,10 +1,18 @@
+/**	@file chip8.cpp
+@author Benjamin Godin
+@date 2019-04-21
+@version 1.0.0
+@note Developed for C++17/vc14.1
+@brief Chip8 functionality
+*/
+
 #include <cstdlib>
 #include <cstring>
 #include <cmath>
 #include <ctime>
 #include <direct.h>
-#include "chip8.h"
-#include "graphics.h"
+#include "chip8.hpp"
+#include "graphics.hpp"
 
 static const uint8_t fontsetSize = 80;
 static uint8_t delayCounter = 0;
@@ -34,9 +42,6 @@ void initChip(Chip8 * chip)
 
 	// clear memory
 	memset(chip->mem_, 0, MEMSIZE);
-
-	// clear display
-	memset(chip->gfx_, 0, GFXSIZE);
 
 	// clear stack
 	memset(chip->stack_, 0, STACKSIZE);

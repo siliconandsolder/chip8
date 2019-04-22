@@ -1,8 +1,25 @@
+/**	@file chip8.hpp
+@author Benjamin Godin
+@date 2019-04-21
+@version 1.0.0
+@note Developed for C++17/vc14.1
+@brief Function declarations, OpCodes, and struct for the Chip8 interpreter
+*/
+
 #pragma once
 #include <cstdio>
-#include <atomic>
 #include <chrono>
-#include "font_set.h"
+#include "font_set.hpp"
+
+#define SLOW_SPEED	1'666'666	// 600Hz
+#define MED_SPEED	1'000'000	// 1000hz
+#define FAST_SPEED	  666'666	// 1500Hz
+
+#define MEMSIZE 4096
+#define ROMSIZE 3584
+#define VREGSIZE 16
+#define STACKSIZE 16
+#define KEYSIZE 16
 
 enum OpCode : uint16_t
 {
@@ -43,17 +60,6 @@ enum OpCode : uint16_t
 	FILL_V0_TO_VX_AT_IDX = 0xF065	// FX65
 };
 
-#define SLOW_SPEED	1'666'666	// 600Hz
-#define MED_SPEED	1'000'000	// 1000hz
-#define FAST_SPEED	  666'666	// 1500Hz
-
-#define MEMSIZE 4096
-#define ROMSIZE 3584
-#define VREGSIZE 16
-#define GFXSIZE 2048
-#define STACKSIZE 16
-#define KEYSIZE 16
-
 typedef struct Chip8
 {
 	uint16_t opCode_;
@@ -64,10 +70,8 @@ typedef struct Chip8
 	uint16_t regIndex_;
 	uint16_t progCounter_;
 	
-	uint8_t gfx_[GFXSIZE];
-	
-	std::atomic<uint8_t> delayTimer_;
-	std::atomic<uint8_t> soundTimer_;
+	uint8_t delayTimer_;
+	uint8_t soundTimer_;
 	bool soundPlaying_;
 	bool isDelay_;
 	

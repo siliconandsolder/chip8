@@ -147,9 +147,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="chip8.h" />
-    <ClInclude Include="font_set.h" />
-    <ClInclude Include="graphics.h" />
+    <ClInclude Include="chip8.hpp" />
+    <ClInclude Include="font_set.hpp" />
+    <ClInclude Include="graphics.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="chip8.cpp" />
