@@ -21,7 +21,7 @@ Flag | Speed in Hertz
 ---- | --------------
 --slow | 600hz
 --med | 1000hz
---flag | 1500hz
+--fast | 1500hz
 
 ## Debug
 My Chip8 emulator comes with its own debugger! While not a complete disassembler, it does allow you to step through each OpCode as it's read.
