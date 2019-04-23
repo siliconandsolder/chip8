@@ -56,7 +56,7 @@ void initChip(Chip8 * chip)
 	chip->delayTimer_ = chip->soundTimer_ = 0;
 	chip->soundPlaying_ = chip->isDelay_ = false;
 
-	srand((unsigned)time(NULL));
+	srand((uint32_t)time(NULL));
 }
 
 /**
