@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Library DLLs">
+      <UniqueIdentifier>{af150a8a-ad5a-4d51-9d8c-231a86a850dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="chip8.cpp">
@@ -35,5 +38,16 @@
     <ClInclude Include="graphics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="glew32.dll">
+      <Filter>Library DLLs</Filter>
+    </None>
+    <None Include="OpenAL32.dll">
+      <Filter>Library DLLs</Filter>
+    </None>
+    <None Include="sigil.dll">
+      <Filter>Library DLLs</Filter>
+    </None>
   </ItemGroup>
 </Project>

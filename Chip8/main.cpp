@@ -25,36 +25,15 @@ int main(int argc, char * argv[])
 	char medFlag[] = "--med";
 	char fastFlag[] = "--fast";
 
+	if (argc == 1)
+	{
+		printf("Too few arguments!\nFormat is: path_name [--slow/--med/--fast]");
+		exit(1);
+	}
 	if (argc == 2)
 	{
-		char flagCheck[3];
-		strncpy(flagCheck, argv[1], 2);
-		flagCheck[2] = '\0';
-		if (strcmp(flagCheck, "--") == 0)
-		{
-			if (strcmp(argv[1], slowFlag) == 0)
-			{
-				speed = SLOW_SPEED;
-			}
-			else if (strcmp(argv[1], medFlag) == 0)
-			{
-				speed = MED_SPEED;
-			}
-			else if (strcmp(argv[1], fastFlag) == 0)
-			{
-				speed = FAST_SPEED;
-			}
-			else
-			{
-				printf("Speed flag not recognized!\n");
-				exit(1);
-			}
-		}
-		else
-		{
-			memset(path, 0, 256);
-			memcpy_s(path, 256, argv[1], strlen(argv[1]));
-		}
+		memset(path, 0, 256);
+		memcpy_s(path, 256, argv[1], strlen(argv[1]));
 	}
 	else if (argc == 3)
 	{
@@ -62,7 +41,7 @@ int main(int argc, char * argv[])
 		memcpy_s(path, 256, argv[1], strlen(argv[1]));
 
 		char flagCheck[3];
-		strncpy(flagCheck, argv[2], 2);
+		strncpy_s(flagCheck, argv[2], 2);
 		flagCheck[2] = '\0';
 		if (strcmp(flagCheck, "--") == 0)
 		{
@@ -87,7 +66,7 @@ int main(int argc, char * argv[])
 	}
 	else if (argc > 3)
 	{
-		printf("Too many arguments!\n");
+		printf("Too many arguments!\nFormat is: path_name [--slow/--med/--fast]");
 		exit(1);
 	}
 
