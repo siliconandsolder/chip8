@@ -65,8 +65,8 @@ int main(int argc, char * argv[])
 	}
 
 	initChip(&chip);
-	setupScreen(&gsi, &chip);
 	loadGame(&chip, path);
+	setupScreen(&gsi, &chip);
 	slRender();
 
 	while (!slGetKey(SL_KEY_ESCAPE))
