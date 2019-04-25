@@ -1,1 +1,11 @@
-﻿
+﻿  chip8.cpp
+  graphics.cpp
+  main.cpp
+  Generating Code...
+  Chip8.vcxproj -> C:\Users\Ben\Documents\Fanshawe_2018_Fall\Other\Chip8\x64\Debug\Chip8.exe
+  C:\Users\Ben\Documents\Fanshawe_2018_Fall\Other\Chip8\Chip8\glew32.dll
+  1 File(s) copied
+  C:\Users\Ben\Documents\Fanshawe_2018_Fall\Other\Chip8\Chip8\OpenAL32.dll
+  1 File(s) copied
+  C:\Users\Ben\Documents\Fanshawe_2018_Fall\Other\Chip8\Chip8\sigil.dll
+  1 File(s) copied

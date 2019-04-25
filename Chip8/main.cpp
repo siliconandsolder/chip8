@@ -46,17 +46,11 @@ int main(int argc, char * argv[])
 		if (strcmp(flagCheck, "--") == 0)
 		{
 			if (strcmp(argv[2], slowFlag) == 0)
-			{
-				long speed = SLOW_SPEED;
-			}
+				speed = SLOW_SPEED;
 			else if (strcmp(argv[2], medFlag) == 0)
-			{
-				long speed = MED_SPEED;
-			}
+				speed = MED_SPEED;
 			else if (strcmp(argv[2], fastFlag) == 0)
-			{
-				long speed = FAST_SPEED;
-			}
+				speed = FAST_SPEED;
 			else
 			{
 				printf("Speed flag not recognized!\n");
